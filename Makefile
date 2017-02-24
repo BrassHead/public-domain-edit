@@ -2,10 +2,10 @@
 # Stupid simple makefile
 #
 all:
-	cc -o ../build/ue main.c
+	cc -o build/ue src/main.c
 
 clean:
-	rm -rf ../build/*
+	rm -rf build/*
 
 install:
-	cp ../build/ue /usr/local/bin
+	cp build/ue /usr/local/bin
