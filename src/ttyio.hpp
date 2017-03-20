@@ -9,8 +9,9 @@
 */
 
 #include <stdio.h>
-#include <sgtty.h>
+#include <termios.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
 
 #define FDIN 0
 #define FDOUT 1
@@ -18,7 +19,7 @@
 int     nrow;				/* Terminal size, rows.		*/
 int     ncol;				/* Terminal size, columns.	*/
 char	buff[1];			/* I/O buffer for read/write	*/
-struct  sgttyb sgt;
+static struct termios save_tio;
 
 void clamp_size(int *nrow, int *ncol)
 {
@@ -60,16 +61,27 @@ int screen_size_changed()
 }
 
 /*
-    Open. Determine the size of the virtual terminal and use
-    ioctl for raw mode.
+    Open. Determine the size of the virtual terminal and set
+    for raw mode I/O.
 */
 void ttopen()
 {
-	ioctl(FDIN,TIOCGETP,&sgt);
-	sgt.sg_flags |= RAW;
-	sgt.sg_flags &= ~ECHO;
-	ioctl(FDIN,TIOCSETP,&sgt);
+    struct termios newt;
 
+    if (tcgetattr(FDIN, &save_tio)<0) {
+        exit(1);
+    }
+    newt = save_tio;
+    newt.c_lflag &= ~(ICANON | ISIG | IEXTEN | ECHO);
+    newt.c_iflag &= ~(BRKINT | ICRNL | IGNBRK | IGNCR | INLCR |
+                      INPCK | ISTRIP | IXON | PARMRK);
+    newt.c_oflag &= ~OPOST;
+    newt.c_cc[VMIN] = 1;        // One byte at a time
+    newt.c_cc[VTIME] = 0;       // No timer
+    if (tcsetattr(FDIN, TCSAFLUSH, &newt)<0) {
+        exit(1);
+    }
+    
     get_screen_size();
 }
 
@@ -78,9 +90,7 @@ void ttopen()
 */
 void ttclose()
 {
-	sgt.sg_flags &= ~RAW;
-	sgt.sg_flags |= ECHO;
-	ioctl(FDIN,TIOCSETP,&sgt);
+    tcsetattr(FDIN, TCSAFLUSH, &save_tio);
 }
 
 /*
