@@ -16,8 +16,9 @@ spawncli(int f, int n, int k)
 {
 	register int	s;
 	char		xname[NXNAME];
+	va_list		dummy;
 
-	if( (s=eread("! ",xname, NXNAME, EFNEW|EFCR, NULL)) != TRUE)
+	if( (s=eread("! ",xname, NXNAME, EFNEW|EFCR, dummy)) != TRUE)
 		return s;
 
 	ttmove( nrow-1, 0 );

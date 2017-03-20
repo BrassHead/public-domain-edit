@@ -68,7 +68,7 @@ writemsg(const char *sp)
 	if you quit the mode with a ^G.
 */
 int
-readmsg()
+readmsg(int f, int n, int k)
 {
 	int	c;
 	int	i;

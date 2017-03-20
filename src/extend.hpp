@@ -21,12 +21,13 @@ bindtokey(int f , int n, int k)
 	SYMBOL	*sp;
 	int	c;
 	char		xname[NXNAME];
+	va_list		dummy;
 
 	if (kbdmip!=NULL || kbdmop!=NULL) {
 		eprintf("Not now");
 		return (FALSE);
 	}
-	if ((s=eread("Function: ", xname, NXNAME, EFAUTO, NULL)) != TRUE)
+	if ((s=eread("Function: ", xname, NXNAME, EFAUTO, dummy)) != TRUE)
 		return (s);
 	if ((sp=symlookup(xname)) == NULL) {
 		eprintf("Unknown function for binding");
@@ -62,8 +63,9 @@ extend(int f , int n, int k)
 	SYMBOL	*sp;
 	int	s;
 	char		xname[NXNAME];
+	va_list		dummy;
 
-	if ((s=eread(": ", xname, NXNAME, EFNEW|EFAUTO, NULL)) != TRUE)
+	if ((s=eread(": ", xname, NXNAME, EFNEW|EFAUTO, dummy)) != TRUE)
 		return (s);
 	if ((sp=symlookup(xname)) != NULL)
 		return ((*sp->s_funcp)(f, n, KRANDOM));
