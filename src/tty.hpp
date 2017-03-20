@@ -32,9 +32,9 @@ int	tcdell	=	11;
 void
 ttinit()
 {
-	ttputc(ESC);
+	ttputc(ESC);		// Save Cursor
 	ttputc('7');
-	ttputc(ESC);
+	ttputc(ESC);		// Switch to alternate screen buffer
 	ttputc('[');
 	ttputc('?');
 	ttputc('4');
@@ -48,17 +48,17 @@ ttinit()
 void
 tttidy()
 {
-	ttputc(ESC);
+	ttputc(ESC);		// Clear screen
 	ttputc('[');
 	ttputc('2');
 	ttputc('J');
-	ttputc(ESC);
+	ttputc(ESC);		// Switch to normal screen buffer (from alternate)
 	ttputc('[');
 	ttputc('?');
 	ttputc('4');
 	ttputc('7');
 	ttputc('l');
-	ttputc(ESC);
+	ttputc(ESC);		// Restore Cursor
 	ttputc('8');
 }
 
