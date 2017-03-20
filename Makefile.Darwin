@@ -1,8 +1,8 @@
 #
 # Stupid simple makefile
 #
-all:
-	echo $(OS)
+all: build/ue
+build/ue build:
 	cc -o build/ue src/main.c
 
 clean:
