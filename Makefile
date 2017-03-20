@@ -1,11 +1,9 @@
 #
-# Stupid simple makefile
+# Cross platform Makefile
 #
-all:
-	cc -o build/ue src/main.c
 
-clean:
-	rm -rf build/*
+TARGETS = all build clean install
 
-install:
-	cp build/ue /usr/local/bin
+$(TARGETS):
+	make -f Makefile.`uname` $@
+

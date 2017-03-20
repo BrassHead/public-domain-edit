@@ -1,0 +1,14 @@
+#
+# Stupid simple makefile
+#
+all: build/ue
+build/ue build:
+	mkdir -p build
+	cc -o build/ue src/main.c
+
+clean:
+	rm -rf build/*
+
+install: build/ue
+	cp build/ue /usr/local/bin
+
