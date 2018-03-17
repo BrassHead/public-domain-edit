@@ -141,7 +141,7 @@ vttidy()
 	would make "vtputc" a little bit more efficient. No checking for errors.
 */
 void
-vtmove(row, col)
+vtmove(int row, int col)
 {
 	vtrow = row;
 	vtcol = col;

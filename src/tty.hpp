@@ -190,7 +190,7 @@ ttdell(int row, int bot, int nchunk)
     No-op.
 */
 void
-ttwindow(top, bot)
+ttwindow(int top, int bot)
 {
 }
 
