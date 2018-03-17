@@ -157,7 +157,7 @@ backisearch(int f, int n, int k)
 	else	accumulate into search string
 */
 int
-isearch(dir)
+isearch(int dir)
 {
 	int	c;
 	LINE	*clp;
