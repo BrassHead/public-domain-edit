@@ -12,3 +12,7 @@ clean:
 install: build/ue
 	cp build/ue /usr/local/bin
 
+debug/ue debug:
+	mkdir -p debug
+	cc -g -o build/ue src/main.c
+
