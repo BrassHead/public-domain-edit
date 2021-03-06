@@ -3,14 +3,15 @@
 #
 all: build/ue
 build/ue build:
+	mkdir -p build
 	cc -o build/ue src/main.c
 
 clean:
 	rm -rf build/*
 
-install:
+install: build/ue
 	cp build/ue /usr/local/bin
 
-debug/ue debug:
+ debug debug/ue:
 	mkdir -p debug
-	cc -g -o build/ue src/main.c
+	cc -g -o debug/ue src/main.c
