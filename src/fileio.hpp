@@ -16,8 +16,8 @@
 	for VMS.
  */
 #define	BDC1	'/'
-// #define BDC2	:'
-// #define BDC3	;'
+// #define BDC2	':'
+// #define BDC3	';'
 
 /*
 	Forward declarations
