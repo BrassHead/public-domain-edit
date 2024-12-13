@@ -65,6 +65,7 @@ short	*kbdmop;			/* Output for above		*/
 char	pat[NPAT];			/* Pattern			*/
 SYMBOL	*symbol[NSHASH];		/* Symbol table listhead.	*/
 SYMBOL	*binding[NKEYS];		/* Key bindings.		*/
+int encrypt_flag = 0; // Global variable to indicate if encryption is enabled
 
 int main(int argc, char *argv[])
 {
@@ -75,14 +76,21 @@ int main(int argc, char *argv[])
 	char		bname[NBUFN];
 
 	strcpy(bname, "main");			/* Get buffer name.	*/
-	if (argc > 1)
-		makename(bname, argv[1]);
+	for (int i = 1; i < argc; i++) {
+		if (strcmp(argv[i], "--enc") == 0 || strcmp(argv[i], "--encrypt") == 0) {
+			encrypt_flag = 1;
+		} else {
+			makename(bname, argv[i]);
+		}
+	}
 	vtinit();				/* Virtual terminal.	*/
 	edinit(bname);				/* Buffers, windows.	*/
 	keymapinit();				/* Symbols, bindings.	*/
-	if (argc > 1) {
-		update();
-		readin(argv[1]);
+	for (int i = 1; i < argc; i++) {
+		if (strcmp(argv[i], "--enc") != 0 && strcmp(argv[i], "--encrypt") != 0) {
+			update();
+			readin(argv[i]);
+		}
 	}
 	lastflag = 0;				/* Fake last flags.	*/
 loop:
