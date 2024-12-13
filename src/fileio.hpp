@@ -17,14 +17,12 @@
  */
 #define	BDC1	'/'
 // #define BDC2	':'
-// #define BDC3	';'
+// #define BDC3 ';'
 
 /*
 	Forward declarations
 */
 void adjustcase(char *fn);
-void encrypt_buffer(char *buf, int nbuf);
-void decrypt_buffer(char *buf, int nbuf);
 
 static	FILE	*ffp;
 
@@ -38,6 +36,17 @@ ffropen(char *fn)
 	adjustcase(fn);
 	if (ffp == NULL)
 		return (FIOFNF);
+
+	// Decrypt buffer if encryption is enabled
+	if (encrypt_flag) {
+		char buffer[NLINE];
+		int length;
+		while ((length = fread(buffer, 1, NLINE, ffp)) > 0) {
+			decrypt_buffer(buffer, length);
+		}
+		rewind(ffp);
+	}
+
 	return (FIOSUC);
 }
 
@@ -54,6 +63,17 @@ ffwopen(char *fn)
 		eprintf("Cannot open file for writing");
 		return (FIOERR);
 	}
+
+	// Encrypt buffer if encryption is enabled
+	if (encrypt_flag) {
+		char buffer[NLINE];
+		int length;
+		while ((length = fread(buffer, 1, NLINE, ffp)) > 0) {
+			encrypt_buffer(buffer, length);
+		}
+		rewind(ffp);
+	}
+
 	return (FIOSUC);
 }
 

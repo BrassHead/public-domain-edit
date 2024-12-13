@@ -76,21 +76,22 @@ int main(int argc, char *argv[])
 	char		bname[NBUFN];
 
 	strcpy(bname, "main");			/* Get buffer name.	*/
-	for (int i = 1; i < argc; i++) {
-		if (strcmp(argv[i], "--enc") == 0 || strcmp(argv[i], "--encrypt") == 0) {
-			encrypt_flag = 1;
-		} else {
-			makename(bname, argv[i]);
-		}
-	}
+	if (argc > 1)
+		makename(bname, argv[1]);
 	vtinit();				/* Virtual terminal.	*/
 	edinit(bname);				/* Buffers, windows.	*/
 	keymapinit();				/* Symbols, bindings.	*/
+
+	// Parse CLI options to set encrypt_flag if --enc or --encrypt is given
 	for (int i = 1; i < argc; i++) {
-		if (strcmp(argv[i], "--enc") != 0 && strcmp(argv[i], "--encrypt") != 0) {
-			update();
-			readin(argv[i]);
+		if (strcmp(argv[i], "--enc") == 0 || strcmp(argv[i], "--encrypt") == 0) {
+			encrypt_flag = 1;
 		}
+	}
+
+	if (argc > 1) {
+		update();
+		readin(argv[1]);
 	}
 	lastflag = 0;				/* Fake last flags.	*/
 loop:
