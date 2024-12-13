@@ -16,13 +16,15 @@
 	for VMS.
  */
 #define	BDC1	'/'
-// #define BDC2	':'
-// #define BDC3 ';'
+// #define BDC2	:'
+// #define BDC3	;'
 
 /*
 	Forward declarations
 */
 void adjustcase(char *fn);
+void encrypt_buffer(char *buf, int nbuf);
+void decrypt_buffer(char *buf, int nbuf);
 
 static	FILE	*ffp;
 
