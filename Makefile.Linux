@@ -1,17 +1,24 @@
 #
 # Stupid simple makefile
 #
+SRC = $(wildcard src/*.c)
+HEADERS = $(wildcard src/*.hpp) $(wildcard src/*.h)
+
 all: build/ue
-build/ue build:
+
+build/ue: $(SRC) $(HEADERS)
 	mkdir -p build
 	cc -o build/ue src/main.c
 
 clean:
-	rm -rf build/*
+	rm -rf build
+	rm -rf dbug
 
 install: build/ue
 	cp build/ue /usr/local/bin
 
- debug debug/ue:
-	mkdir -p debug
-	cc -g -o debug/ue src/main.c
+debug: dbug/ue
+
+dbug/ue: $(SRC) $(HEADERS)
+	mkdir -p dbug
+	cc -g -o dbug/ue src/main.c

@@ -37,4 +37,5 @@ xcuserdata/
 
 # Specific to this project
 #
-build/*
+build/
+dbug/
