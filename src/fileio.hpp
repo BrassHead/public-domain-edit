@@ -26,6 +26,30 @@ void adjustcase(char *fn);
 
 static	FILE	*ffp;
 
+int offset = 'P' - '!';
+/*
+	Encrypt the buffer content using a simple rotation cipher.
+*/
+void encrypt_buffer(char *buffer, int length) {
+	for (int i = 0; i < length; i++) {
+		if (buffer[i] >= '!' && buffer[i] <= '~') {
+			if (buffer[i] >= '!' && buffer[i] <= 'O') {
+				buffer[i] += offset;
+			} else {
+				buffer[i] -= offset;
+			}
+		}
+	}
+}
+
+/*
+	Decrypt the buffer content
+*/
+void decrypt_buffer(char *buffer, int length) {
+	encrypt_buffer(buffer, length); // rotations are symmetric
+}
+
+
 /*
 	Open a file for reading.
 */
@@ -36,6 +60,7 @@ ffropen(char *fn)
 	adjustcase(fn);
 	if (ffp == NULL)
 		return (FIOFNF);
+
 	return (FIOSUC);
 }
 
@@ -52,6 +77,7 @@ ffwopen(char *fn)
 		eprintf("Cannot open file for writing");
 		return (FIOERR);
 	}
+
 	return (FIOSUC);
 }
 
@@ -71,10 +97,15 @@ ffclose()
 	only at the newline.
 */
 int
-ffputline(char buf[], int nbuf)
+ffputline(char ibuf[], int nbuf)
 {
 	int	i;
+	char buf[NLINE];
 
+	strncpy(buf, ibuf, nbuf);
+	if (is_encrypt) {
+		encrypt_buffer(buf, nbuf);
+	}
 	for (i=0; i<nbuf; ++i)
 		putc(buf[i]&0xFF, ffp);
 	putc('\n', ffp);
@@ -130,6 +161,9 @@ ffgetline(char buf[], int nbuf)
 			return (FIOEOF);	/* no newline at EOF.	*/
 	}
 	buf[i] = 0;
+	if (is_encrypt) {
+		decrypt_buffer(buf, i);
+	}
 	return (FIOSUC);
 }
 

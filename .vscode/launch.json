@@ -8,13 +8,33 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/ue",
+            "program": "${workspaceFolder}/dbug/ue",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/dbug",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "debug-build"
+        },
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/dbug/ue",
+            "args": ["--enc", "foo"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}/dbug",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",

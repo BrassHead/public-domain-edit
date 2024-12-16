@@ -316,4 +316,4 @@ extern	int nmsg;
 extern	int	curmsgf;
 extern	int	newmsgf;
 extern	char    msg[];
-
+extern  int is_encrypt;
