@@ -65,7 +65,7 @@ short	*kbdmop;			/* Output for above		*/
 char	pat[NPAT];			/* Pattern			*/
 SYMBOL	*symbol[NSHASH];		/* Symbol table listhead.	*/
 SYMBOL	*binding[NKEYS];		/* Key bindings.		*/
-int encrypt_flag = 0; // Global variable to indicate if encryption is enabled
+int is_encrypt = 0; // Global variable to indicate if encryption is enabled
 
 int main(int argc, char *argv[])
 {
@@ -74,24 +74,30 @@ int main(int argc, char *argv[])
 	int	n;
 	int	mflag;
 	char		bname[NBUFN];
+	int first_file_index = 0;
 
 	strcpy(bname, "main");			/* Get buffer name.	*/
-	if (argc > 1)
-		makename(bname, argv[1]);
-	vtinit();				/* Virtual terminal.	*/
-	edinit(bname);				/* Buffers, windows.	*/
-	keymapinit();				/* Symbols, bindings.	*/
 
 	// Parse CLI options to set encrypt_flag if --enc or --encrypt is given
 	for (int i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "--enc") == 0 || strcmp(argv[i], "--encrypt") == 0) {
-			encrypt_flag = 1;
+			is_encrypt = 1;
+		}
+		else if (first_file_index == 0 && argv[i][0] != '-') {
+			first_file_index = i;
 		}
 	}
 
-	if (argc > 1) {
+	if (first_file_index > 0)
+		makename(bname, argv[first_file_index]);
+	vtinit();				/* Virtual terminal.	*/
+	edinit(bname);				/* Buffers, windows.	*/
+	keymapinit();				/* Symbols, bindings.	*/
+
+
+	if (first_file_index > 0) {
 		update();
-		readin(argv[1]);
+		readin(argv[first_file_index]);
 	}
 	lastflag = 0;				/* Fake last flags.	*/
 loop:

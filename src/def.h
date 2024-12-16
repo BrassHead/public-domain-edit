@@ -316,10 +316,4 @@ extern	int nmsg;
 extern	int	curmsgf;
 extern	int	newmsgf;
 extern	char    msg[];
-
-// Function declarations for encryption and decryption
-void encrypt_buffer(char *buffer, int length);
-void decrypt_buffer(char *buffer, int length);
-
-// Global variable to indicate if encryption is enabled
-int encrypt_flag;
+extern  int is_encrypt;

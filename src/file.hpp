@@ -14,8 +14,6 @@
 int readin(char fname[]);
 void makename(char bname[], char fname[]);
 int writeout(char *fn);
-void encrypt_buffer(char *buffer, int length);
-void decrypt_buffer(char *buffer, int length);
 
 
 /*
@@ -376,26 +374,4 @@ filename(int f, int n, int k)
 	curbp->b_flag &= ~BFBAK;			// No backup.
 #endif
 	return (TRUE);
-}
-
-/*
-	Encrypt the buffer content using rot13.
-*/
-void encrypt_buffer(char *buffer, int length) {
-	for (int i = 0; i < length; i++) {
-		if ((buffer[i] >= 'a' && buffer[i] <= 'z') || (buffer[i] >= 'A' && buffer[i] <= 'Z')) {
-			if ((buffer[i] >= 'a' && buffer[i] <= 'm') || (buffer[i] >= 'A' && buffer[i] <= 'M')) {
-				buffer[i] += 13;
-			} else {
-				buffer[i] -= 13;
-			}
-		}
-	}
-}
-
-/*
-	Decrypt the buffer content using rot13.
-*/
-void decrypt_buffer(char *buffer, int length) {
-	encrypt_buffer(buffer, length); // rot13 is symmetric
 }
